@@ -284,7 +284,7 @@ hide_output firewall-cmd --add-port=587/tcp  --permanent
 hide_output firewall-cmd --reload
 
 echo "allow postfix_cleanup_t default_t:file getattr;" > /tmp/postfix.pp
-semodule -X 300 -i /tmp/postfix
+semodule -X 300 -i /tmp/postfix.pp
 
 
 # Restart services
