@@ -197,5 +197,5 @@ chown nginx:nginx $STORAGE_ROOT/mail/roundcube/roundcube.sqlite
 chmod 664 $STORAGE_ROOT/mail/roundcube/roundcube.sqlite
 
 # Enable PHP modules.
-phpenmod -v php mcrypt imap
+#phpenmod -v php mcrypt imap
 restart_service php-fpm
