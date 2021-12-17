@@ -14,7 +14,6 @@ dnf --quiet --assumeyes install \
      php php-gd php-mbstring php-intl php-pecl-apcu php-mysqlnd php-opcache php-json php-zip
 
 usermod -a -G user-data nginx
-chmod 770 /home/user-data
 
 InstallNextcloud() {
 
