@@ -290,7 +290,9 @@ hide_output firewall-cmd --reload
 
 # Restart services
 
-semanage fcontext -a -t postfix_cleanup_tmp_t  /user-data/mail/users.sqlite
+hide_output semanage fcontext -d ${STORAGE_ROOT}/mail/users.sqlite
+hide_output semanage fcontext -a -t postfix_master_exec_t  ${STORAGE_ROOT}/mail/users.sqlite
+hide_output restorecon -v "${STORAGE_ROOT}/mail/users.sqlite'
 
 restart_service postfix
 restart_service postgrey
