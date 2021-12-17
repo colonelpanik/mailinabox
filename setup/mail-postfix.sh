@@ -233,7 +233,7 @@ tools/editconf.py /etc/postfix/main.cf \
 # other MTA have their own intervals. To fix the problem of receiving
 # e-mails really latter, delay of greylisting has been set to
 # 180 seconds (default is 300 seconds).
-tools/editconf.py /etc/default/postgrey \
+tools/editconf.py /etc/sysconfig/postgrey \
 	POSTGREY_OPTS=\"'--inet=127.0.0.1:10023 --delay=180'\"
 
 
