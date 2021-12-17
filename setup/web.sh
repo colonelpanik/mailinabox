@@ -49,7 +49,7 @@ tools/editconf.py /etc/php.ini -c ';' \
         default_charset="UTF-8"
 
 # Configure the path environment for php-fpm
-tools/editconf.py /etc/php.fpm.d/www.conf -c ';' \
+tools/editconf.py /etc/php-fpm.d/www.conf -c ';' \
 	env[PATH]=/usr/local/bin:/usr/bin:/bin \
 
 # Configure php-fpm based on the amount of memory the machine has
