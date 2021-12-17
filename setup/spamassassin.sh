@@ -37,7 +37,7 @@ rm -rf ~/.pyzor
 tools/editconf.py /etc/spamassassin/local.cf -s \
 	pyzor_options="--homedir /etc/spamassassin/pyzor"
 mkdir -p /etc/spamassassin/pyzor
-echo "public.pyzor.org:24441" > /etc/spamassassin/pyzor/servers
+echo "public.pyzor.org:24441" > /etc/spamassassin/pyzor/serversdn
 # check with: pyzor --homedir /etc/mail/spamassassin/pyzor ping
 
 # Configure spampd:
@@ -46,10 +46,26 @@ echo "public.pyzor.org:24441" > /etc/spamassassin/pyzor/servers
 # * Increase the maximum message size of scanned messages from the default of 64KB to 500KB, which
 #   is Spamassassin (spamc)'s own default. Specified in KBytes.
 # * Disable localmode so Pyzor, DKIM and DNS checks can be used.
-tools/editconf.py /etc/system/spampd \
-	DESTPORT=10026 \
-	ADDOPTS="\"--maxsize=2000\"" \
-	LOCALONLY=0
+
+cat > /etc/sysconfig/spampd << EOF
+SPAMPD_OPTIONS="-a -L --maxsize 500 --host 127.0.0.1:10026 --relayhost 127.0.0.1:10027"
+EOF
+
+cat > /etc/systemd/system/multi-user.target.wants/spampd.service << EOF
+[Unit]
+Description=spampd daemon
+After=syslog.target network.target
+Wants=sa-update.timer
+[Service]
+User=spampd
+Group=spampd
+EnvironmentFile=/etc/sysconfig/spampd
+ExecStart=/usr/sbin/spampd --nodetach -u spampd -g spampd --homedir /var/spool/spampd $SPAMPD_OPTIONS
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 
 # Spamassassin normally wraps spam as an attachment inside a fresh
 # email with a report about the message. This also protects the user
@@ -66,6 +82,7 @@ tools/editconf.py /etc/spamassassin/local.cf -s \
 	report_safe=0 \
 	"add_header all Report"=_REPORT_ \
 	"add_header all Score"=_SCORE_
+
 
 
 # Authentication-Results SPF/Dmarc checks
