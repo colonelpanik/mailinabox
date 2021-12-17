@@ -121,7 +121,7 @@ fi
 if [ ! -d /usr/local/lib/owncloud/ ] || [[ ! ${CURRENT_NEXTCLOUD_VER} =~ ^$nextcloud_ver ]]; then
 
 	# Stop php-fpm if running. If theyre not running (which happens on a previously failed install), dont bail.
-	service php7.2-fpm stop &> /dev/null || /bin/true
+	service php-fpm stop &> /dev/null || /bin/true
 
 	# Backup the existing ownCloud/Nextcloud.
 	# Create a backup directory to store the current installation and database to
@@ -315,7 +315,7 @@ sudo -u nginx \
 
 # Set PHP FPM values to support large file uploads
 # (semicolon is the comment character in this file, hashes produce deprecation warnings)
-tools/editconf.py /etc/php/7.2/fpm/php.ini -c ';' \
+tools/editconf.py /etc/php.ini -c ';' \
 	upload_max_filesize=16G \
 	post_max_size=16G \
 	output_buffering=16384 \
@@ -324,7 +324,7 @@ tools/editconf.py /etc/php/7.2/fpm/php.ini -c ';' \
 	short_open_tag=On
 
 # Set Nextcloud recommended opcache settings
-tools/editconf.py /etc/php/7.2/cli/conf.d/10-opcache.ini -c ';' \
+tools/editconf.py /etc/php.d/10-opcache.ini -c ';' \
 	opcache.enable=1 \
 	opcache.enable_cli=1 \
 	opcache.interned_strings_buffer=8 \
@@ -334,8 +334,8 @@ tools/editconf.py /etc/php/7.2/cli/conf.d/10-opcache.ini -c ';' \
 	opcache.revalidate_freq=1
 
 # If apc is explicitly disabled we need to enable it
-if grep -q apc.enabled=0 /etc/php/7.2/mods-available/apcu.ini; then
-	tools/editconf.py /etc/php/7.2/mods-available/apcu.ini -c ';' \
+if grep -q apc.enabled=0 /etc/php.d/apcu.ini; then
+	tools/editconf.py /etc/php.d/apcu.ini -c ';' \
 		apc.enabled=1
 fi
 
