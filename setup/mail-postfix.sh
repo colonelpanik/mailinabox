@@ -270,9 +270,9 @@ tools/editconf.py /etc/postfix/main.cf \
 
 # Allow the two SMTP ports in the firewall.
 
-firewall-cmd --allow-service=smtp --permanent
-firewall-cmd --allow-service=smtps --permanent
-firewall-cmd --allow-service=submission --permanent
+firewall-cmd --add-service=smtp --permanent
+firewall-cmd --add-service=smtps --permanent
+firewall-cmd --add-service=submission --permanent
 firewall-cmd --reload
 # Restart services
 

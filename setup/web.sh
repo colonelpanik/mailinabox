@@ -143,5 +143,5 @@ restart_service nginx
 restart_service php7.2-fpm
 
 # Open ports.
-firewall-cmd --allow-service=https --allow-service=http --permanent
+firewall-cmd --add-service=https --add-service=http --permanent
 firewall-cmd --reload

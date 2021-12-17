@@ -225,7 +225,7 @@ if [ -z "${DISABLE_FIREWALL:-}" ]; then
 	# Install `ufw` which provides a simple firewall configuration.
 
 	# Allow incoming connections to SSH.
-	firewall-cmd --allow-service=ssh;
+	firewall-cmd --add-service=ssh;
 
 	# ssh might be running on an alternate port. Use sshd -T to dump sshd's #NODOC
 	# settings, find the port it is supposedly running on, and open that port #NODOC
