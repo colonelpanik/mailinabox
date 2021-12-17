@@ -37,7 +37,6 @@ sed "s#STORAGE_ROOT#$STORAGE_ROOT#" \
 # Drop TLSv1.0, TLSv1.1, following the Mozilla "Intermediate" recommendations
 # at https://ssl-config.mozilla.org/#server=nginx&server-version=1.17.0&config=intermediate&openssl-version=1.1.1.
 tools/editconf.py /etc/nginx/nginx.conf -s \
-	server_names_hash_bucket_size="128;" \
 	ssl_protocols="TLSv1.2 TLSv1.3;"
 
 # Tell PHP not to expose its version number in the X-Powered-By header.
