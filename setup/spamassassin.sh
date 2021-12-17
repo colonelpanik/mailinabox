@@ -66,10 +66,12 @@ ExecStart=/usr/sbin/spampd --nodetach -u spampd -g spampd --homedir /var/spool/s
 WantedBy=multi-user.target
 EOF
 # Add user if not existing
-if [ $(grep -q spampd /etc/passwd) -eq 0 ]
+if [ $(grep -q spampd /etc/passwd) -eq 0 ] ; then
     useradd -r -s /bin/login spampd
 fi
-ln -s /usr/lib/systemd/system/spampd.service /etc/systemd/system/multi-user.target.wants/spampd.service
+if [ ! -e /etc/systemd/system/multi-user.target.wants/spampd.service ]; then
+    ln -s /usr/lib/systemd/system/spampd.service /etc/systemd/system/multi-user.target.wants/spampd.service
+fi
 systemctl daemon-reload
 
 # Spamassassin normally wraps spam as an attachment inside a fresh
