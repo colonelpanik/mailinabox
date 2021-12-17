@@ -78,7 +78,7 @@ echo Install EPEL
 dnf --assumeyes --quiet install epel-release
 echo Installing support packages...
 # Install applications
-hide_output dnf --assumeyes --quiet install wget curl git bc unzip net-tools cronie chrony dnf-automatic firewalld
+dnf --assumeyes --quiet install wget curl git bc unzip net-tools cronie chrony dnf-automatic firewalld
 # Install services/daemons that run continuously
 systemctl enable firewald
 systemctl start firewalld
@@ -86,7 +86,7 @@ restart_service crond
 restart_service chronyd
 # enable automatic downloads and installation of updates
 sed -i 's/apply_updates = no/apply_updates = yes/' /etc/dnf/automatic.conf
-hide_output systemctl enable --now dnf-automatic.timer
+systemctl enable --now dnf-automatic.timer
 
 # ### Update Packages
 
