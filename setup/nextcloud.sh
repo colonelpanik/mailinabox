@@ -63,7 +63,7 @@ InstallNextcloud() {
 	fi
 
 	# Fix weird permissions.
-	chmod 750 /usr/local/lib/owncloud/{apps,config}
+	chmod 775 /usr/local/lib/owncloud/{apps,config}
 
 	# Create a symlink to the config.php in STORAGE_ROOT (for upgrades we're restoring the symlink we previously
 	# put in, and in new installs we're creating a symlink and will create the actual config later).
@@ -119,7 +119,7 @@ else
 	CURRENT_NEXTCLOUD_VER=""
 fi
 
-# If the Nextcloud directory is missing (never been installed before, or the nextcloud version to be installed is different
+# If the Nextcloud directory is missing (never been installed before, or the nextcloud version to be installed is different "
 # from the version currently installed, do the install/upgrade
 if [ ! -d /usr/local/lib/owncloud/ ] || [[ ! ${CURRENT_NEXTCLOUD_VER} =~ ^$nextcloud_ver ]]; then
 
