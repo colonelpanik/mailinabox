@@ -23,7 +23,7 @@ echo "Installing SpamAssassin..."
 dnf --assumeyes --quiet install spamass-milter-postfix spamass-milter spamassassin-iXhash2  pyzor perl-Razor-Agent.x86_64
 
 # Allow spamassassin to download new rules.
-tools/editconf.py /etc/system/spamassassin \
+tools/editconf.py /etc/sysconfig/spamassassin \
 	CRON=1
 
 # Configure pyzor, which is a client to a live database of hashes of
