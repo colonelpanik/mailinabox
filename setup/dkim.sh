@@ -26,7 +26,7 @@ echo "127.0.0.1" > /etc/opendkim/TrustedHosts
 touch /etc/opendkim/KeyTable
 touch /etc/opendkim/SigningTable
 
-if grep -q "ExternalIgnoreList" /etc/opendkim.conf; then
+if grep -q "ExternalIgnoreList      refile:/etc/opendkim/TrustedHosts" /etc/opendkim.conf; then
 	true # already done #NODOC
 else
 	# Add various configuration options to the end of `opendkim.conf`.
