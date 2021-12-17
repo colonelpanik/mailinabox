@@ -274,6 +274,11 @@ firewall-cmd --add-service=smtp --permanent
 firewall-cmd --add-service=smtps --permanent
 firewall-cmd --add-port=587/tcp  --permanent
 firewall-cmd --reload
+
+# selinux for postgrey
+semanage port -a -t postgrey_port_t -p tcp 10023
+setsebool -P nis_enabled 1
+
 # Restart services
 
 restart_service postfix
