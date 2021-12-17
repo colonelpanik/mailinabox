@@ -283,8 +283,8 @@ hide_output firewall-cmd --add-service=smtps --permanent
 hide_output firewall-cmd --add-port=587/tcp  --permanent
 hide_output firewall-cmd --reload
 
-echo "allow postfix_cleanup_t default_t:file getattr;" | audit2allow -M /tmp/postfix.pp
-semodule -X 300 -i /tmp/postfix.pp
+echo "allow postfix_cleanup_t default_t:file getattr;" | audit2allow -M postfix.pp
+semodule -X 300 -i postfix.pp
 
 
 # Restart services
