@@ -66,7 +66,7 @@ ExecStart=/usr/sbin/spampd --nodetach -u spampd -g spampd --homedir /var/spool/s
 WantedBy=multi-user.target
 EOF
 # Add user if not existing
-if [ $(grep -q spampd /etc/passwd) -eq 0 ] ; then
+if [ "$(grep -q spampd /etc/passwd)" -eq '0' ] ; then
     useradd -r -s /bin/login spampd
 fi
 if [ ! -e /etc/systemd/system/multi-user.target.wants/spampd.service ]; then
