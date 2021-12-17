@@ -45,9 +45,10 @@ echo "Installing Postfix (SMTP server)..."
 dnf --quiet --assumeyes install postfix postfix-sqlite postfix-pcre postgrey ca-certificates
 
 # selinux for postgrey
-sudo semanage port -a -t postgrey_port_t -p tcp 10023
-sudo setsebool -P nis_enabled 1
-
+if [[ `setsebool -P nis_enabled 1` =~ "--> on" ]]; then
+    sudo semanage port -a -t postgrey_port_t -p tcp 10023
+    sudo setsebool -P nis_enabled 1
+fi
 
 # ### Basic Settings
 
