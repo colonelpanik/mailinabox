@@ -139,7 +139,7 @@ chown -R $STORAGE_USER $STORAGE_ROOT/www
 
 # Start services.
 restart_service nginx
-restart_service php7.2-fpm
+restart_service php-fpm
 
 # Open ports.
 firewall-cmd --add-service=https --add-service=http --permanent
