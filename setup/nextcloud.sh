@@ -9,6 +9,9 @@ source /etc/mailinabox.conf # load global vars
 
 echo "Installing Nextcloud (contacts/calendar)..."
 
+mkdir /root/awl
+hide_output dnf --quiet --assumeyes install  https://github.com/colonelpanik/mailinabox/blob/main/php-awl-0.62-9.el8.noarch.rpm
+hide_output dnf --quiet --assumeyes --enablerepo=powertools install doxygen
 hide_output dnf --quiet --assumeyes install \
      yum-utils unzip curl wget bash-completion policycoreutils-python-utils mlocate bzip2 \
      php php-gd php-mbstring php-intl php-pecl-apcu php-mysqlnd php-opcache php-json php-zip php-process
