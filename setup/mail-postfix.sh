@@ -285,9 +285,6 @@ hide_output firewall-cmd --add-service=smtps --permanent
 hide_output firewall-cmd --add-port=587/tcp  --permanent
 hide_output firewall-cmd --reload
 
-(cd /tmp && rm -f /tmp/postfix.pp && echo "allow postfix_cleanup_t default_t:file getattr;" | audit2allow -M postfix.pp && semodule -X 300 -i postfix.pp)
-
-
 # Restart services
 
 hide_output semanage fcontext -d ${STORAGE_ROOT}/mail/users.sqlite
