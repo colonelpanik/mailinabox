@@ -46,8 +46,10 @@ hide_output dnf --quiet --assumeyes install postfix postfix-sqlite postfix-pcre 
 
 # selinux for postgrey
 if [[ `setsebool -P nis_enabled 1` =~ "--> on" ]]; then
-    sudo semanage port -a -t postgrey_port_t -p tcp 10023
-    sudo setsebool -P nis_enabled 1
+    semanage port -a -t postgrey_port_t -p tcp 10023
+    setsebool -P nis_enabled 1
+    
+    
 fi
 
 # ### Basic Settings
@@ -288,7 +290,7 @@ hide_output firewall-cmd --reload
 
 # Restart services
 
-
+semanage fcontext -a -t postfix_cleanup_tmp_t  /user-data/mail/users.sqlite
 
 restart_service postfix
 restart_service postgrey
