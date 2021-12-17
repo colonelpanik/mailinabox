@@ -91,8 +91,6 @@ systemctl enable --now dnf-automatic.timer
 # ### Update Packages
 
 # Update system packages to make sure we have the latest upstream versions
-# of things from Ubuntu, as well as the directory of packages provide by the
-# PPAs so we can install those packages later.
 
 echo Updating system packages...
 dnf --quiet --assumeyes update
@@ -203,13 +201,7 @@ fi
 # less likely to stall for very long.
 
 echo Initializing system random number generator...
-dd if=/dev/random of=/dev/urandom bs=1 count=32 2> /dev/null
-
-# This is supposedly sufficient. But because we're not sure if hardware entropy
-# is really any good on virtualized systems, we'll also seed from Ubuntu's
-# pollinate servers:
-
-# Between these two, we really ought to be all set.
+dd if=/dev/random of=/dev/urandom bs=1 count=64 2> /dev/null
 
 # We need an ssh key to store backups via rsync, if it doesn't exist create one
 if [ ! -f /root/.ssh/id_rsa_miab ]; then
@@ -278,7 +270,7 @@ fi #NODOC
 # DNS server, which won't work for RBLs. So we really need a local recursive
 # nameserver.
 #
-# We'll install `bind9`, which as packaged for Ubuntu, has DNSSEC enabled by default via "dnssec-validation auto".
+# We'll install `named`, which as packaged for RHEL, has DNSSEC enabled by default via "dnssec-validation auto".
 # We'll have it be bound to 127.0.0.1 so that it does not interfere with
 # the public, recursive nameserver `nsd` bound to the public ethernet interfaces.
 #

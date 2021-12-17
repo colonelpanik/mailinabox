@@ -9,11 +9,7 @@
 if [ -z "$TAG" ]; then
 	# If a version to install isn't explicitly given as an environment
 	# variable, then install the latest version. But the latest version
-	# depends on the operating system. Existing Ubuntu 14.04 users need
-	# to be able to upgrade to the latest version supporting Ubuntu 14.04,
-	# in part because an upgrade is required before jumping to Ubuntu 18.04.
-	# New users on Ubuntu 18.04 need to get the latest version number too.
-	#
+	# depends on the operating system.
 	# Also, the system status checks read this script for TAG = (without the
 	# space, but if we put it in a comment it would confuse the status checks!)
 	# to get the latest version, so the first such line must be the one that we

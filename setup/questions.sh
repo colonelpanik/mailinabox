@@ -184,13 +184,13 @@ if [ "$PRIMARY_HOSTNAME" = "auto" ]; then
 	PRIMARY_HOSTNAME=$(get_default_hostname)
 fi
 
-# Set STORAGE_USER and STORAGE_ROOT to default values (user-data and /home/user-data), unless
+# Set STORAGE_USER and STORAGE_ROOT to default values (user-data and /user-data), unless
 # we've already got those values from a previous run.
 if [ -z "${STORAGE_USER:-}" ]; then
 	STORAGE_USER=$([[ -z "${DEFAULT_STORAGE_USER:-}" ]] && echo "user-data" || echo "$DEFAULT_STORAGE_USER")
 fi
 if [ -z "${STORAGE_ROOT:-}" ]; then
-	STORAGE_ROOT=$([[ -z "${DEFAULT_STORAGE_ROOT:-}" ]] && echo "/home/$STORAGE_USER" || echo "$DEFAULT_STORAGE_ROOT")
+	STORAGE_ROOT=$([[ -z "${DEFAULT_STORAGE_ROOT:-}" ]] && echo "/$STORAGE_USER" || echo "$DEFAULT_STORAGE_ROOT")
 fi
 
 # Show the configuration, since the user may have not entered it manually.
