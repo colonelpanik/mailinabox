@@ -11,6 +11,8 @@ source setup/functions.sh # load our functions
 #
 # First set the hostname in the configuration file, then activate the setting
 
+echo "Setting hostname..."
+
 hostnamectl set-hostname $PRIMARY_HOSTNAME
 
 # ### Fix permissions
@@ -75,16 +77,17 @@ fi
 # Enable EPEL and support apps
 
 echo Install EPEL
-dnf --assumeyes --quiet install epel-release
+hide_output dnf --assumeyes --quiet install epel-release
 echo Installing support packages...
 # Install applications
-dnf --assumeyes --quiet install wget curl git bc unzip net-tools cronie chrony dnf-automatic firewalld ldns
+hide_output dnf --assumeyes --quiet install wget curl git bc unzip net-tools cronie chrony dnf-automatic firewalld ldns
 # Install services/daemons that run continuously
 systemctl enable firewalld
 systemctl start firewalld
 restart_service crond
 restart_service chronyd
 # enable automatic downloads and installation of updates
+echo Enabling automatic system updates...
 sed -i 's/apply_updates = no/apply_updates = yes/' /etc/dnf/automatic.conf
 systemctl enable --now dnf-automatic.timer
 
@@ -93,13 +96,13 @@ systemctl enable --now dnf-automatic.timer
 # Update system packages to make sure we have the latest upstream versions
 
 echo Updating system packages...
-dnf --quiet --assumeyes update
+hide_output dnf --quiet --assumeyes update
 
 # Old kernels pile up over time and take up a lot of disk space, and because of Mail-in-a-Box
 # changes there may be other packages that are no longer needed. Clear out anything apt knows
 # is safe to delete.
 
-dnf --quiet --assumeyes autoremove
+hide_output dnf --quiet --assumeyes autoremove
 
 # ### Install System Packages
 
@@ -120,7 +123,7 @@ dnf --quiet --assumeyes autoremove
 # * openssh-client: provides ssh-keygen
 
 echo Installing system packages...
-dnf --quiet --assumeyes install python36 python36-devel python3-pip python3-setuptools netcat curl git sudo bc haveged openssh-clients unzip fail2ban-all
+hide_output dnf --quiet --assumeyes install python36 python36-devel python3-pip python3-setuptools netcat curl git sudo bc haveged openssh-clients unzip fail2ban-all
 
 # ### Suppress Upgrade Prompts
 
@@ -155,7 +158,7 @@ else
 	fi
 fi
 
-# ### Seed /dev/urandom
+# ### Seed /dev/urandom "
 #
 # /dev/urandom is used by various components for generating random bytes for
 # encryption keys and passwords:
@@ -284,7 +287,7 @@ fi #NODOC
 # * The max-recursion-queries directive increases the maximum number of iterative queries.
 #  	If more queries than specified are sent, bind9 returns SERVFAIL. After flushing the cache during system checks,
 #	we ran into the limit thus we are increasing it from 75 (default value) to 100.
-dnf --quiet --assumeyes install bind bind-utils
+hide_output dnf --quiet --assumeyes install bind bind-utils
 
 if ! grep -q "max-recursion-queries " /etc/named.conf; then
 	# Add a max-recursion-queries directive if it doesn't exist inside the options block.
@@ -304,7 +307,7 @@ echo "nameserver 127.0.0.1" > /etc/resolv.conf
 # Restart the DNS services.
 
 restart_service named
-systemctl restart systemd-resolved
+hide_output systemctl restart systemd-resolved
 
 # ### Fail2Ban Service
 

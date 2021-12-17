@@ -278,7 +278,7 @@ firewall-cmd --reload
 # selinux for postgrey
 semanage port -a -t postgrey_port_t -p tcp 10023
 setsebool -P nis_enabled 1
-ausearch -c 'postgrey --unix' --raw | audit2allow -M my-postgreyunix
+echo "allow postgrey_t unreserved_port_t:tcp_socket name_bind;" | audit2allow -M my-postgreyunix
 semodule -X 300 -i my-postgreyunix.pp
 
 # Restart services
