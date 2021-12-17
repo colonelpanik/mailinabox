@@ -80,6 +80,8 @@ echo Installing support packages...
 # Install applications
 hide_output dnf --assumeyes --quiet install wget curl git bc unzip net-tools cronie chrony dnf-automatic firewalld
 # Install services/daemons that run continuously
+systemctl enable firewald
+systemctl start firewalld
 restart_service crond
 restart_service chronyd
 # enable automatic downloads and installation of updates
