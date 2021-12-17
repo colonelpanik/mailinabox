@@ -44,6 +44,11 @@ source /etc/mailinabox.conf # load global vars
 echo "Installing Postfix (SMTP server)..."
 dnf --quiet --assumeyes install postfix postfix-sqlite postfix-pcre postgrey ca-certificates
 
+# selinux for postgrey
+sudo semanage port -a -t postgrey_port_t -p tcp 10023
+sudo setsebool -P nis_enabled 1
+
+
 # ### Basic Settings
 
 # Set some basic settings...
@@ -261,6 +266,8 @@ if [ ! -f /etc/postgrey/whitelist_clients ] || find /etc/postgrey/whitelist_clie
 fi
 EOF
 chmod +x /etc/cron.daily/mailinabox-postgrey-whitelist
+
+
 /etc/cron.daily/mailinabox-postgrey-whitelist
 
 # Increase the message size limit from 10MB to 128MB.
@@ -275,9 +282,6 @@ firewall-cmd --add-service=smtps --permanent
 firewall-cmd --add-port=587/tcp  --permanent
 firewall-cmd --reload
 
-# selinux for postgrey
-sudo semanage port -a -t postgrey_port_t -p tcp 10023
-sudo setsebool -P nis_enabled 1
 
 # Restart services
 
