@@ -24,9 +24,7 @@ source /etc/mailinabox.conf # load global vars
 # not by Ubuntu.
 
 echo "Installing Dovecot (IMAP server)..."
-dnf --quiet --assumeyes install \
-	dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd dovecot-sqlite sqlite3 \
-	dovecot-sieve dovecot-managesieved
+dnf --quiet --assumeyes install dovecot dovecot-mysql dovecot-pigeonhole
 
 # The `dovecot-imapd`, `dovecot-pop3d`, and `dovecot-lmtpd` packages automatically
 # enable IMAP, POP and LMTP protocols.
