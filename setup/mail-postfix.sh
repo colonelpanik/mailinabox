@@ -291,7 +291,7 @@ hide_output firewall-cmd --reload
 # Restart services
 
 hide_output semanage fcontext -d ${STORAGE_ROOT}/mail/users.sqlite
-hide_output semanage fcontext -a -t postfix_master_exec_t  ${STORAGE_ROOT}/mail/users.sqlite
+hide_output semanage fcontext -a -t postfix_data_t  ${STORAGE_ROOT}/mail/users.sqlite
 hide_output restorecon -v "${STORAGE_ROOT}/mail/users.sqlite'
 
 restart_service postfix
