@@ -13,11 +13,12 @@ echo "Installing Mail-in-a-Box system management daemon..."
 #
 # certbot installs EFF's certbot which we use to
 # provision free TLS certificates.
-dnf --quiet --assumeyes install duplicity python-pip virtualenv certbot rsync
+hide_output dnf --quiet --assumeyes install duplicity python-pip virtualenv certbot rsync
 
 # b2sdk is used for backblaze backups.
 # boto is used for amazon aws backups.
 # Both are installed outside the pipenv, so they can be used by duplicity
+echo "installing required python pip modules..."
 hide_output pip3 install --upgrade b2sdk boto
 
 # Create a virtualenv for the installation of Python 3 packages

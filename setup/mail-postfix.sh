@@ -42,7 +42,7 @@ source /etc/mailinabox.conf # load global vars
 # * `ca-certificates`: A trust store used to squelch postfix warnings about
 #   untrusted opportunistically-encrypted connections.
 echo "Installing Postfix (SMTP server)..."
-dnf --quiet --assumeyes install postfix postfix-sqlite postfix-pcre postgrey ca-certificates
+hide_output dnf --quiet --assumeyes install postfix postfix-sqlite postfix-pcre postgrey ca-certificates
 
 # selinux for postgrey
 if [[ `setsebool -P nis_enabled 1` =~ "--> on" ]]; then
@@ -269,7 +269,7 @@ EOF
 chmod +x /etc/cron.daily/mailinabox-postgrey-whitelist
 
 
-/etc/cron.daily/mailinabox-postgrey-whitelist
+hide_output /etc/cron.daily/mailinabox-postgrey-whitelist
 
 # Increase the message size limit from 10MB to 128MB.
 # The same limit is specified in nginx.conf for mail submitted via webmail and Z-Push.
@@ -278,13 +278,18 @@ tools/editconf.py /etc/postfix/main.cf \
 
 # Allow the two SMTP ports in the firewall.
 
-firewall-cmd --add-service=smtp --permanent
-firewall-cmd --add-service=smtps --permanent
-firewall-cmd --add-port=587/tcp  --permanent
-firewall-cmd --reload
+hide_output firewall-cmd --add-service=smtp --permanent
+hide_output firewall-cmd --add-service=smtps --permanent
+hide_output firewall-cmd --add-port=587/tcp  --permanent
+hide_output firewall-cmd --reload
+
+echo "allow postfix_cleanup_t default_t:file getattr;" > /tmp/postfix.pp
+semodule -X 300 -i /tmp/postfix
 
 
 # Restart services
+
+
 
 restart_service postfix
 restart_service postgrey

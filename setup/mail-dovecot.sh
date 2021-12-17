@@ -24,7 +24,7 @@ source /etc/mailinabox.conf # load global vars
 # not by Ubuntu.
 
 echo "Installing Dovecot (IMAP server)..."
-dnf --quiet --assumeyes install dovecot dovecot-mysql dovecot-pigeonhole sqlite
+hide_output dnf --quiet --assumeyes install dovecot dovecot-mysql dovecot-pigeonhole sqlite
 
 # The `dovecot-imapd`, `dovecot-pop3d`, and `dovecot-lmtpd` packages automatically
 # enable IMAP, POP and LMTP protocols.
@@ -207,11 +207,11 @@ mkdir -p $STORAGE_ROOT/mail/sieve/global_after
 chown -R mail.mail $STORAGE_ROOT/mail/sieve
 
 # Allow the IMAP/POP ports in the firewall.
-firewall-cmd --add-service=imaps
-firewall-cmd --add-service=pop3s
+hide_output firewall-cmd --add-service=imaps
+hide_output firewall-cmd --add-service=pop3s
 
 # Allow the Sieve port in the firewall.
-firewall-cmd --add-port=4190/tcp
+hide_output firewall-cmd --add-port=4190/tcp
 
 # Restart services.
 restart_service dovecot
