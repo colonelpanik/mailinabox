@@ -78,7 +78,7 @@ echo Install EPEL
 dnf --assumeyes --quiet install epel-release
 echo Installing support packages...
 # Install applications
-dnf --assumeyes --quiet install wget curl git bc unzip net-tools cronie chrony dnf-automatic firewalld
+dnf --assumeyes --quiet install wget curl git bc unzip net-tools cronie chrony dnf-automatic firewalld ldns
 # Install services/daemons that run continuously
 systemctl enable firewalld
 systemctl start firewalld
