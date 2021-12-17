@@ -284,7 +284,7 @@ hide_output firewall-cmd --add-port=587/tcp  --permanent
 hide_output firewall-cmd --reload
 
 rm -f /tmp/postfix.pp
-echo "allow postfix_cleanup_t default_t:file getattr;" | audit2allow -o /tmp/postfix.pp
+echo "allow postfix_cleanup_t default_t:file getattr;" | audit2allow -M /tmp/postfix.pp
 cd /tmp && semodule -X 300 -i postfix.pp
 
 
