@@ -144,5 +144,5 @@ chmod +x /etc/cron.daily/mailinabox-dnssec
 
 # Permit DNS queries on TCP/UDP in the firewall.
 
-firewall-cmd --add-service=domain
+firewall-cmd --add-service=dns
 
