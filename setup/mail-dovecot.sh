@@ -211,7 +211,7 @@ firewall-cmd --add-service=imaps
 firewall-cmd --add-service=pop3s
 
 # Allow the Sieve port in the firewall.
-firewall-cmd --add-service=sieve
+firewall-cmd --add-port=4190/tcp
 
 # Restart services.
 restart_service dovecot
