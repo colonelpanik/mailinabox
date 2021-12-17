@@ -51,7 +51,7 @@ cat > /etc/sysconfig/spampd << EOF
 SPAMPD_OPTIONS="-a -L --maxsize 500 --host 127.0.0.1:10026 --relayhost 127.0.0.1:10027"
 EOF
 
-cat > /etc/systemd/system/multi-user.target.wants/spampd.service << 'EOF'
+cat > /usr/lib/systemd/system/spampd.service << 'EOF'
 [Unit]
 Description=spampd daemon
 After=syslog.target network.target
@@ -67,6 +67,8 @@ WantedBy=multi-user.target
 EOF
 
 useradd -r -s /bin/login spampd
+ln -s /usr/lib/systemd/system/spampd.service /etc/systemd/system/multi-user.target.wants/spampd.service
+systemctl daemon-reload
 
 # Spamassassin normally wraps spam as an attachment inside a fresh
 # email with a report about the message. This also protects the user
