@@ -66,6 +66,7 @@ ExecStart=/usr/sbin/spampd --nodetach -u spampd -g spampd --homedir /var/spool/s
 WantedBy=multi-user.target
 EOF
 
+useradd -r -s /bin/login spampd
 
 # Spamassassin normally wraps spam as an attachment inside a fresh
 # email with a report about the message. This also protects the user
