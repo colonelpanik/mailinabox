@@ -20,7 +20,7 @@ source setup/functions.sh # load our functions
 # For more information see Debian Bug #689414:
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=689414
 echo "Installing SpamAssassin..."
-dnf --assumeyes --quiet install spamass-milter-postfix spamass-milter spamassassin-iXhash2 razor pyzor dovecot-antispam libmail-dkim-perl
+dnf --assumeyes --quiet install spamass-milter-postfix spamass-milter spamassassin-iXhash2  pyzor perl-Razor-Agent.x86_64
 
 # Allow spamassassin to download new rules.
 tools/editconf.py /etc/system/spamassassin \
