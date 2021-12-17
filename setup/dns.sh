@@ -102,7 +102,7 @@ if [ ! -f "$STORAGE_ROOT/dns/dnssec/$algo.conf" ]; then
 	# (This previously used -b 2048 but it's unclear if this setting makes sense
 	# for non-RSA keys, so it's removed. The RSA-based keys are not recommended
 	# anymore anyway.)
-	KSK=$(umask 077; cd $STORAGE_ROOT/dns/dnssec; dnssec-keygen -r /dev/urandom -a $algo -f KSK -k _domain_);
+	KSK=$(umask 077; cd $STORAGE_ROOT/dns/dnssec; dnssec-keygen -r /dev/urandom -a $algo -f KSK);
 
 	# Now create a Zone-Signing Key (ZSK) which is expected to be
 	# rotated more often than a KSK, although we have no plans to
@@ -110,7 +110,7 @@ if [ ! -f "$STORAGE_ROOT/dns/dnssec/$algo.conf" ]; then
 	# disturbing DNS availability.) Omit `-k`.
 	# (This previously used -b 1024 but it's unclear if this setting makes sense
 	# for non-RSA keys, so it's removed.)
-	ZSK=$(umask 077; cd $STORAGE_ROOT/dns/dnssec; dnssec-keygen -r /dev/urandom -T KEY -a $algo _domain_);
+	ZSK=$(umask 077; cd $STORAGE_ROOT/dns/dnssec; dnssec-keygen -r /dev/urandom -T KEY -a $algo);
 
 	# These generate two sets of files like:
 	#
