@@ -272,7 +272,7 @@ tools/editconf.py /etc/postfix/main.cf \
 
 firewall-cmd --add-service=smtp --permanent
 firewall-cmd --add-service=smtps --permanent
-firewall-cmd --add-service=submission --permanent
+firewall-cmd --add-port=587/tcp  --permanent
 firewall-cmd --reload
 # Restart services
 
