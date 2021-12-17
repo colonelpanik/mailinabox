@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Check that we are running on Ubuntu 18.04 LTS (or 18.04.xx).
-if [ "$(grep -q 'Linux release 8')" -eq 0 ]
+if [ "$(grep -q 'Linux release 8')" -eq 0 ] ; then
         "Just centos 8 for now"
 	exit 1
 fi
