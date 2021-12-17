@@ -16,7 +16,7 @@ source /etc/mailinabox.conf # load global vars
 # * ldnsutils: Helper utilities for signing DNSSEC zones.
 # * openssh-client: Provides ssh-keyscan which we use to create SSHFP records.
 echo "Installing nsd (DNS server)..."
-apt_install nsd ldnsutils openssh-client
+dnf --quiet --assumeyes install nsd
 
 # Prepare nsd's configuration.
 
@@ -144,5 +144,5 @@ chmod +x /etc/cron.daily/mailinabox-dnssec
 
 # Permit DNS queries on TCP/UDP in the firewall.
 
-ufw_allow domain
+firewall-cmd --allow-service=domain
 

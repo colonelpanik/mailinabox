@@ -11,15 +11,10 @@ source setup/functions.sh # load our functions
 #
 # First set the hostname in the configuration file, then activate the setting
 
-echo $PRIMARY_HOSTNAME > /etc/hostname
-hostname $PRIMARY_HOSTNAME
+hostnamectl set-hostname $PRIMARY_HOSTNAME
 
 # ### Fix permissions
 
-# The default Ubuntu Bionic image on Scaleway throws warnings during setup about incorrect
-# permissions (group writeable) set on the following directories.
-
-chmod g-w /etc /etc/default /usr
 
 # ### Add swap space to the system
 
@@ -75,26 +70,21 @@ then
 	fi
 fi
 
-# ### Add PPAs.
+# ### Add repos
 
-# We install some non-standard Ubuntu packages maintained by other
-# third-party providers. First ensure add-apt-repository is installed.
+# Enable EPEL and support apps
 
-if [ ! -f /usr/bin/add-apt-repository ]; then
-	echo "Installing add-apt-repository..."
-	hide_output apt-get update
-	apt_install software-properties-common
-fi
-
-# Ensure the universe repository is enabled since some of our packages
-# come from there and minimal Ubuntu installs may have it turned off.
-hide_output add-apt-repository -y universe
-
-# Install the certbot PPA.
-hide_output add-apt-repository -y ppa:certbot/certbot
-
-# Install the duplicity PPA.
-hide_output add-apt-repository -y ppa:duplicity-team/duplicity-release-git
+echo Install EPEL
+dnf --assumeyes --quiet install epel-release
+echo Installing support packages...
+# Install applications
+hide_output dnf --assumeyes --quiet install wget curl git bc unzip net-tools cronie chrony dnf-automatic firewalld
+# Install services/daemons that run continuously
+restart_service crond
+restart_service chronyd
+# enable automatic downloads and installation of updates
+sed -i 's/apply_updates = no/apply_updates = yes/' /etc/dnf/automatic.conf
+hide_output systemctl enable --now dnf-automatic.timer
 
 # ### Update Packages
 
@@ -103,14 +93,13 @@ hide_output add-apt-repository -y ppa:duplicity-team/duplicity-release-git
 # PPAs so we can install those packages later.
 
 echo Updating system packages...
-hide_output apt-get update
-apt_get_quiet upgrade
+dnf --quiet --assumeyes update
 
 # Old kernels pile up over time and take up a lot of disk space, and because of Mail-in-a-Box
 # changes there may be other packages that are no longer needed. Clear out anything apt knows
 # is safe to delete.
 
-apt_get_quiet autoremove
+dnf --quiet --assumeyes autoremove
 
 # ### Install System Packages
 
@@ -131,18 +120,9 @@ apt_get_quiet autoremove
 # * openssh-client: provides ssh-keygen
 
 echo Installing system packages...
-apt_install python3 python3-dev python3-pip python3-setuptools \
-	netcat-openbsd wget curl git sudo coreutils bc \
-	haveged pollinate openssh-client unzip \
-	unattended-upgrades cron ntp fail2ban rsyslog
+dnf --quiet --assumeyes install python36 python36-devel python3-pip python3-setuptools netcat curl git sudo bc haveged openssh-clients unzip fail2ban-all
 
 # ### Suppress Upgrade Prompts
-# When Ubuntu 20 comes out, we don't want users to be prompted to upgrade,
-# because we don't yet support it.
-if [ -f /etc/update-manager/release-upgrades ]; then
-	tools/editconf.py /etc/update-manager/release-upgrades Prompt=never
-	rm -f /var/lib/ubuntu-release-upgrader/release-upgrade-available
-fi
 
 # ### Set the system timezone
 #
@@ -163,7 +143,6 @@ if [ -z "${NONINTERACTIVE:-}" ]; then
 		# If the file is missing or this is the user's first time running
 		# Mail-in-a-Box setup, run the interactive timezone configuration
 		# tool.
-		dpkg-reconfigure tzdata
 		restart_service rsyslog
 	fi
 else
@@ -228,8 +207,6 @@ dd if=/dev/random of=/dev/urandom bs=1 count=32 2> /dev/null
 # is really any good on virtualized systems, we'll also seed from Ubuntu's
 # pollinate servers:
 
-pollinate  -q -r
-
 # Between these two, we really ought to be all set.
 
 # We need an ssh key to store backups via rsync, if it doesn't exist create one
@@ -238,16 +215,6 @@ if [ ! -f /root/.ssh/id_rsa_miab ]; then
 	ssh-keygen -t rsa -b 2048 -a 100 -f /root/.ssh/id_rsa_miab -N '' -q
 fi
 
-# ### Package maintenance
-#
-# Allow apt to install system updates automatically every day.
-
-cat > /etc/apt/apt.conf.d/02periodic <<EOF;
-APT::Periodic::MaxAge "7";
-APT::Periodic::Update-Package-Lists "1";
-APT::Periodic::Unattended-Upgrade "1";
-APT::Periodic::Verbose "0";
-EOF
 
 # ### Firewall
 
@@ -256,10 +223,9 @@ EOF
 # we skip this if the user sets DISABLE_FIREWALL=1. #NODOC
 if [ -z "${DISABLE_FIREWALL:-}" ]; then
 	# Install `ufw` which provides a simple firewall configuration.
-	apt_install ufw
 
 	# Allow incoming connections to SSH.
-	ufw_limit ssh;
+	firewall-cmd --allow-service=ssh;
 
 	# ssh might be running on an alternate port. Use sshd -T to dump sshd's #NODOC
 	# settings, find the port it is supposedly running on, and open that port #NODOC
@@ -269,12 +235,13 @@ if [ -z "${DISABLE_FIREWALL:-}" ]; then
 	if [ "$SSH_PORT" != "22" ]; then
 
 	echo Opening alternate SSH port $SSH_PORT. #NODOC
-	ufw_limit $SSH_PORT #NODOC
+	firewall-cmd --allow-port=$SSH_PORT/tcp #NODOC
 
 	fi
 	fi
 
-	ufw --force enable;
+	systemctl enable firewalld
+	systemctl restart firewalld
 fi #NODOC
 
 # ### Local DNS Service
@@ -323,16 +290,11 @@ fi #NODOC
 # * The max-recursion-queries directive increases the maximum number of iterative queries.
 #  	If more queries than specified are sent, bind9 returns SERVFAIL. After flushing the cache during system checks,
 #	we ran into the limit thus we are increasing it from 75 (default value) to 100.
-apt_install bind9
-tools/editconf.py /etc/default/bind9 \
-	"OPTIONS=\"-u bind -4\""
-if ! grep -q "listen-on " /etc/bind/named.conf.options; then
-	# Add a listen-on directive if it doesn't exist inside the options block.
-	sed -i "s/^}/\n\tlisten-on { 127.0.0.1; };\n}/" /etc/bind/named.conf.options
-fi
-if ! grep -q "max-recursion-queries " /etc/bind/named.conf.options; then
+dnf --quiet --assumeyes install bind bind-utils
+
+if ! grep -q "max-recursion-queries " /etc/named.conf; then
 	# Add a max-recursion-queries directive if it doesn't exist inside the options block.
-	sed -i "s/^}/\n\tmax-recursion-queries 100;\n}/" /etc/bind/named.conf.options
+	sed -i "s/options {/options {\n\tmax-recursion-queries 100;\n/" /etc/named.conf
 fi
 
 # First we'll disable systemd-resolved's management of resolv.conf and its stub server.
@@ -347,7 +309,7 @@ echo "nameserver 127.0.0.1" > /etc/resolv.conf
 
 # Restart the DNS services.
 
-restart_service bind9
+restart_service named
 systemctl restart systemd-resolved
 
 # ### Fail2Ban Service

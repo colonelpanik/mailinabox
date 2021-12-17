@@ -20,10 +20,10 @@ source setup/functions.sh # load our functions
 # For more information see Debian Bug #689414:
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=689414
 echo "Installing SpamAssassin..."
-apt_install spampd razor pyzor dovecot-antispam libmail-dkim-perl
+dnf --assumeyes --install spampd razor pyzor dovecot-antispam libmail-dkim-perl
 
 # Allow spamassassin to download new rules.
-tools/editconf.py /etc/default/spamassassin \
+tools/editconf.py /etc/system/spamassassin \
 	CRON=1
 
 # Configure pyzor, which is a client to a live database of hashes of
@@ -46,7 +46,7 @@ echo "public.pyzor.org:24441" > /etc/spamassassin/pyzor/servers
 # * Increase the maximum message size of scanned messages from the default of 64KB to 500KB, which
 #   is Spamassassin (spamc)'s own default. Specified in KBytes.
 # * Disable localmode so Pyzor, DKIM and DNS checks can be used.
-tools/editconf.py /etc/default/spampd \
+tools/editconf.py /etc/system/spampd \
 	DESTPORT=10026 \
 	ADDOPTS="\"--maxsize=2000\"" \
 	LOCALONLY=0

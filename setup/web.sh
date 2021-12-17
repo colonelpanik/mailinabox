@@ -5,13 +5,6 @@
 source setup/functions.sh # load our functions
 source /etc/mailinabox.conf # load global vars
 
-# Some Ubuntu images start off with Apache. Remove it since we
-# will use nginx. Use autoremove to remove any Apache depenencies.
-if [ -f /usr/sbin/apache2 ]; then
-	echo Removing apache...
-	hide_output apt-get -y purge apache2 apache2-*
-	hide_output apt-get -y --purge autoremove
-fi
 
 # Install nginx and a PHP FastCGI daemon.
 #
@@ -19,7 +12,7 @@ fi
 
 echo "Installing Nginx (web server)..."
 
-apt_install nginx php-cli php-fpm idn2
+dnf --quiet --assumeyes install bind nginx php-cli php-fpm idn2
 
 rm -f /etc/nginx/sites-enabled/default
 
@@ -150,5 +143,5 @@ restart_service nginx
 restart_service php7.2-fpm
 
 # Open ports.
-ufw_allow http
-ufw_allow https
+firewall-cmd --allow-service=https --allow-service=http --permanent
+firewall-cmd --reload

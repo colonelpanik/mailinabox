@@ -42,7 +42,7 @@ source /etc/mailinabox.conf # load global vars
 # * `ca-certificates`: A trust store used to squelch postfix warnings about
 #   untrusted opportunistically-encrypted connections.
 echo "Installing Postfix (SMTP server)..."
-apt_install postfix postfix-sqlite postfix-pcre postgrey ca-certificates
+dnf --quiet --assumeyes postfix postfix-sqlite postfix-pcre postgrey ca-certificates
 
 # ### Basic Settings
 
@@ -270,10 +270,10 @@ tools/editconf.py /etc/postfix/main.cf \
 
 # Allow the two SMTP ports in the firewall.
 
-ufw_allow smtp
-ufw_allow smtps
-ufw_allow submission
-
+firewall-cmd --allow-service=smtp --permanent
+firewall-cmd --allow-service=smtps --permanent
+firewall-cmd --allow-service=submission --permanent
+firewall-cmd --reload
 # Restart services
 
 restart_service postfix

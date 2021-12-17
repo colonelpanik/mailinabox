@@ -4,7 +4,7 @@
 
 source setup/functions.sh # load our functions
 
-# Check system setup: Are we running as root on Ubuntu 18.04 on a
+# Check system setup: Are we running as root on RHEL 8 compat on a
 # machine with enough memory? Is /tmp mounted with exec.
 # If not, this shows an error and exits.
 source setup/preflight.sh
