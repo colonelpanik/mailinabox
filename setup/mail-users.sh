@@ -26,6 +26,8 @@ if [ ! -f $db_path ]; then
 	echo "CREATE TABLE auto_aliases (id INTEGER PRIMARY KEY AUTOINCREMENT, source TEXT NOT NULL UNIQUE, destination TEXT NOT NULL, permitted_senders TEXT);" | sqlite3 $db_path;
 fi
 
+hide_output restorecon -v "${STORAGE_ROOT}/mail/users.sqlite"
+
 # ### User Authentication
 
 # Have Dovecot query our database, and not system users, for authentication.
