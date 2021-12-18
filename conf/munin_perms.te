@@ -2,6 +2,7 @@ module munin_perms 1.0;
 
 require {
         type system_munin_plugin_t;
+        type mail_munint_plugin_t;
         class netlink_generic_socket create;
         class unix_dgram_socket create;
 }
