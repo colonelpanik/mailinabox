@@ -7,7 +7,7 @@ source /etc/mailinabox.conf # load global vars
 
 # install Munin
 echo "Installing Munin (system monitoring)..."
-dnf --quiet --assumeyes install --enablerepo=PowerTools,epel munin munin-node perl-CGI-Fast
+dnf --quiet --assumeyes install --enablerepo=powertools,epel munin munin-node perl-CGI-Fast
 # libcgi-fast-perl is needed by /usr/lib/munin/cgi/munin-cgi-graph
 
 # edit config
