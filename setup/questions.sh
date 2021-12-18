@@ -30,7 +30,7 @@ if [ -z "${PRIMARY_HOSTNAME:-}" ]; then
 		# domain the user possibly wants to use is example.com then.
 		# We strip the string "box." from the hostname to get the mail
 		# domain. If the hostname differs, nothing happens here.
-		DEFAULT_DOMAIN_GUESS=$(echo $(get_default_hostname) | sed -e 's/^.*?\.//')
+		DEFAULT_DOMAIN_GUESS=$(echo $(get_default_hostname) | sed -e '/\..*\./s/^[^.]*\.//')
 
 		# This is the first run. Ask the user for his email address so we can
 		# provide the best default for the box's hostname.
@@ -64,7 +64,7 @@ you really want.
 
 		# Take the part after the @-sign as the user's domain name, and add
 		# 'box.' to the beginning to create a default hostname for this machine.
-		DEFAULT_PRIMARY_HOSTNAME=box.$(echo $EMAIL_ADDR | sed '/\..*\./s/^[^.]*\.//')
+		DEFAULT_PRIMARY_HOSTNAME=box.$(echo $EMAIL_ADDR | sed '/.*@//')
 	fi
 
 	input_box "Hostname" \
