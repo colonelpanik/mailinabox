@@ -20,9 +20,10 @@ source setup/functions.sh # load our functions
 # For more information see Debian Bug #689414:
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=689414
 echo "Installing SpamAssassin..."
-dnf --assumeyes --quiet install spamass-milter-postfix spamass-milter spamassassin-iXhash2  pyzor perl-Razor-Agent.x86_64
+hide_output dnf --assumeyes --quiet install spamass-milter-postfix spamass-milter spamassassin-iXhash2  pyzor perl-Razor-Agent.x86_64
 
-wget https://raw.githubusercontent.com/mpaperno/spampd/master/spampd.pl -O /usr/sbin/spampd
+hide_output wget https://raw.githubusercontent.com/mpaperno/spampd/master/spampd.pl -O /usr/sbin/spampd
+chmod +x /usr/sbin/spampd
 
 # Allow spamassassin to download new rules.
 tools/editconf.py /etc/sysconfig/spamassassin \

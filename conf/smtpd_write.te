@@ -10,14 +10,13 @@ require {
         type default_t;
         type postfix_cleanup_t;
         type postfix_master_t;
-        class file { getattr write };
+        class file { getattr write read };
         class lnk_file read;
 }
 
 #============= postfix_cleanup_t ==============
 allow postfix_cleanup_t postfix_smtpd_tmp_t:file write;
-allow postfix_cleanup_t default_t:file getattr;
-allow postfix_cleanup_t default_t:file { read write };
+allow postfix_cleanup_t default_t:file { getattr write read };
 
 #============= postfix_master_t ==============
 allow postfix_master_t postfix_smtpd_tmp_t:file write;
