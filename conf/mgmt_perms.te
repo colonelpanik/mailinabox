@@ -3,6 +3,7 @@ module mgmt_perms 1.0;
 
 require {
         type nsd_conf_t;
+        type httpd_config_t;
         type admin_home_t;
         type default_t;
         type init_t;
@@ -18,3 +19,6 @@ allow init_t admin_home_t:file { create ioctl open read rename unlink execute ex
 allow init_t default_t:file { read write open ioctl lock };
 allow init_t default_t:lnk_file { read write open ioctl lock };
 allow init_t nsd_conf_t:dir add_name;
+allow init_t httpd_config_t:dir add_name;
+allow init_t nsd_conf_t:file create;
+
