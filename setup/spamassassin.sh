@@ -47,7 +47,7 @@ echo "public.pyzor.org:24441" > /etc/mail/spamassassin/pyzor/serversdn
 #   is Spamassassin (spamc)'s own default. Specified in KBytes.
 # * Disable localmode so Pyzor, DKIM and DNS checks can be used.
 
-mkdir $STORAGE_ROOT/run
+mkdir -p $STORAGE_ROOT/run
 chmod 777 $STORAGE_ROOT/run
 
 cat > /etc/sysconfig/spampd << EOF
