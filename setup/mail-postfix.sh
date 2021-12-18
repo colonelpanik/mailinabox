@@ -290,14 +290,6 @@ checkmodule -M -m -o /tmp/smtpd_write.mod `pwd`/conf/smtpd_write.te
 semodule_package -o /tmp/smtpd_write.pp -m /tmp/smtpd_write.mod
 (cd /tmp; semodule -i smtpd_write.pp)
 
-checkmodule -M -m -o /tmp/postgrey_perm.mod `pwd`/conf/postgrey_perm.te
-semodule_package -o /tmp/postgrey_perm.pp -m /tmp/postgrey_perm.mod
-(cd /tmp; semodule -i postgrey_perm.pp)
-
-
-# The pid file can't be written here and we're probably in a bad place, so kill and restart after fixing
-sed -i 's/\/var\/run\/postgrey\.pid/\/tmp\/postgrey.pid/' /etc/sysconfig/postgrey
-pkill -9 postgrey
 
 restart_service postfix
 restart_service postgrey
