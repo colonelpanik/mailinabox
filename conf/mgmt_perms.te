@@ -2,13 +2,17 @@
 module mgmt_perms 1.0;
 
 require {
+        type nsd_conf_t;
         type admin_home_t;
+        type default_t;
         type init_t;
-        class file { read open create ioctl write rename unlink execute };
+        class file { create ioctl open read rename unlink write execute };
+        class dir add_name;
 }
 
 #============= init_t ==============
-allow init_t admin_home_t:file { read open create ioctl write rename unlink execute };
 
 
-
+allow init_t admin_home_t:file { create ioctl open read rename unlink execute };
+allow init_t default_t:file { read write };
+allow init_t nsd_conf_t:dir add_name;
