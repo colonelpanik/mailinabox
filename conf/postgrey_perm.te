@@ -4,8 +4,8 @@ module postgrey_perm 1.0;
 require {
         type tmp_t;
         type postgrey_t;
-        class dir write;
+        class dir { write read add_name };
 }
 
 #============= postgrey_t ==============
-allow postgrey_t tmp_t:dir write;
+allow postgrey_t tmp_t:dir { write read add_name };
