@@ -4,11 +4,11 @@ module mgmt_perms 1.0;
 require {
         type admin_home_t;
         type init_t;
-        class file { read open create ioctl write rename unlink };
+        class file { read open create ioctl write rename unlink execute };
 }
 
 #============= init_t ==============
-allow init_t admin_home_t:file { read open create ioctl write rename unlink };
+allow init_t admin_home_t:file { read open create ioctl write rename unlink execute };
 
 
 
