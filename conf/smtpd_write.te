@@ -10,13 +10,13 @@ require {
         type default_t;
         type postfix_cleanup_t;
         type postfix_master_t;
-        class file { getattr write read open };
+        class file { getattr write read open lock };
         class lnk_file read;
 }
 
 #============= postfix_cleanup_t ==============
 allow postfix_cleanup_t postfix_smtpd_tmp_t:file { read write write getattr };
-allow postfix_cleanup_t default_t:file { getattr write read open };
+allow postfix_cleanup_t default_t:file { getattr write read open lock };
 
 #============= postfix_master_t ==============
 allow postfix_master_t postfix_smtpd_tmp_t:file { read write write getattr };
@@ -26,6 +26,6 @@ allow postfix_master_t default_t:file { getattr read write open };
 allow postfix_smtpd_t default_t:file { read write open getattr };
 allow postfix_smtpd_t default_t:lnk_file read;
 allow postfix_smtpd_t dovecot_etc_t:lnk_file read;
-allow postfix_smtpd_t postfix_cleanup_tmp_t:file { read write write getattr };
+allow postfix_smtpd_t postfix_cleanup_tmp_t:file { read write write getattr lock };
 allow postfix_smtpd_t postfix_data_t:file { read write write getattr };
 
