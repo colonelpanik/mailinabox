@@ -24,7 +24,7 @@ rm -f /etc/nginx/sites-enabled/default
 rm -f /etc/nginx/nginx-ssl.conf # we used to put it here
 sed "s#STORAGE_ROOT#$STORAGE_ROOT#" \
 	conf/nginx.conf > /etc/nginx/nginx.conf
-cp conf/nginx.conf /etc/nginx/ssl/nginx-ssl.conf
+cp conf/nginx.conf /etc/nginx/conf.d/nginx-ssl.conf
 
 # Fix some nginx defaults.
 #
