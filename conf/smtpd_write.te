@@ -20,7 +20,7 @@ allow postfix_cleanup_t default_t:file { getattr write read open };
 
 #============= postfix_master_t ==============
 allow postfix_master_t postfix_smtpd_tmp_t:file write;
-allow postfix_master_t default_t:file { getattr read write };
+allow postfix_master_t default_t:file { getattr read write open };
 
 #============= postfix_smtpd_t ==============
 allow postfix_smtpd_t default_t:file getattr;
