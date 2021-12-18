@@ -1,0 +1,11 @@
+
+module my-postgreyunix 1.0;
+
+require {
+        type tmp_t;
+        type postgrey_t;
+        class dir write;
+}
+
+#============= postgrey_t ==============
+allow postgrey_t tmp_t:dir write;
