@@ -312,13 +312,15 @@ hide_output systemctl restart systemd-resolved
 # ### Fail2Ban Service
 
 # Configure the Fail2Ban installation to prevent dumb bruce-force attacks against dovecot, postfix, ssh, etc.
+# Use systemd/journald for this since thats what we use
 rm -f /etc/fail2ban/jail.local # we used to use this file but don't anymore
-rm -f /etc/fail2ban/jail.d/defaults-debian.conf # removes default config so we can manage all of fail2ban rules in one config
 cat conf/fail2ban/jails.conf \
 	| sed "s/PUBLIC_IP/$PUBLIC_IP/g" \
 	| sed "s#STORAGE_ROOT#$STORAGE_ROOT#" \
-	> /etc/fail2ban/jail.d/mailinabox.conf
+	> /etc/fail2ban/jail.d/mailinabox.local
 cp -f conf/fail2ban/filter.d/* /etc/fail2ban/filter.d/
+
+sed -i 's/^backend = auto$/backend = systemd/' /etc/fail2ban/jail.conf
 
 # On first installation, the log files that the jails look at don't all exist.
 # e.g., The roundcube error log isn't normally created until someone logs into
