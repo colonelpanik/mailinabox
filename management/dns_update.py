@@ -98,13 +98,13 @@ def do_dns_update(env, force=False):
 
 	# Kick nsd if anything changed.
 	if len(updated_domains) > 0:
-		shell('check_call', ["/usr/sbin/service", "nsd", "restart"])
+		shell('check_call', ["/usr/sbin/systemctl", "restart", "nsd"])
 
 	# Write the OpenDKIM configuration tables for all of the mail domains.
 	from mailconfig import get_mail_domains
 	if write_opendkim_tables(get_mail_domains(env), env):
 		# Settings changed. Kick opendkim.
-		shell('check_call', ["/usr/sbin/service", "opendkim", "restart"])
+		shell('check_call', ["/usr/sbin/systemctl", "restart", "opendkim"])
 		if len(updated_domains) == 0:
 			# If this is the only thing that changed?
 			updated_domains.append("OpenDKIM configuration")
@@ -716,7 +716,7 @@ def sign_zone(domain, zonefile, env):
 		"-e", expiry_date,
 
 		# use NSEC3
-		"-n",
+		"-u",
 
 		# zonefile to sign
 		"/etc/nsd/zones/" + zonefile,
@@ -736,10 +736,9 @@ def sign_zone(domain, zonefile, env):
 	# in the status checks.
 	with open("/etc/nsd/zones/" + zonefile + ".ds", "w") as f:
 		for key in ksk_keys:
-			for digest_type in ('1', '2', '4'):
+			for digest_type in ('SHA-1', 'SHA-256', 'SHA-384'):
 				rr_ds = shell('check_output', ["/usr/sbin/dnssec-dsfromkey",
-					"-n", # output to stdout
-					"-" + digest_type, # 1=SHA1, 2=SHA256, 4=SHA384
+					"-a " + digest_type, # 1=SHA1, 2=SHA256, 4=SHA384
 					key + ".key"
 				])
 				f.write(rr_ds)
