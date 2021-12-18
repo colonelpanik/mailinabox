@@ -196,7 +196,7 @@ tools/editconf.py /etc/postfix/main.cf \
 	smtp_dns_support_level=dnssec \
 	smtp_tls_mandatory_protocols="!SSLv2,!SSLv3,!TLSv1,!TLSv1.1" \
 	smtp_tls_mandatory_ciphers=high \
-	smtp_tls_CAfile=/etc/ssl/certs/ca-certificates.crt \
+	smtp_tls_CAfile=/etc/pki/tls/certs/ca-bundle.crt\
 	smtp_tls_loglevel=2
 
 # ### Incoming Mail
