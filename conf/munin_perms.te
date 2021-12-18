@@ -1,4 +1,4 @@
-module my-eth 1.0;
+module munin_perms 1.0;
 
 require {
         type system_munin_plugin_t;
