@@ -5,7 +5,12 @@ require {
         type mail_munin_plugin_t;
         class netlink_generic_socket { create bind setopt ioctl read write getattr };
         class unix_dgram_socket { create bind setopt ioctl read write getattr };
+        type munin_t;
+        class capability dac_override;
 }
+
+#============= munin_t ==============
+allow munin_t self:capability dac_override;
 
 #============= system_munin_plugin_t ==============
 allow system_munin_plugin_t self:netlink_generic_socket { create bind setopt ioctl read write getattr };
