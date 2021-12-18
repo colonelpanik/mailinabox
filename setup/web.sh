@@ -23,7 +23,8 @@ rm -f /etc/nginx/sites-enabled/default
 # the DH params.
 rm -f /etc/nginx/nginx-ssl.conf # we used to put it here
 sed "s#STORAGE_ROOT#$STORAGE_ROOT#" \
-	conf/nginx-ssl.conf > /etc/nginx/conf.d/ssl.conf
+	conf/nginx.conf > /etc/nginx/nginx.conf
+cp conf/nginx.conf /etc/nginx/ssl/nginx-ssl.conf
 
 # Fix some nginx defaults.
 #
