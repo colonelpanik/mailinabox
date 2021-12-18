@@ -25,9 +25,10 @@ def get_dns_domains(env):
 	from mailconfig import get_mail_domains
 	from web_update import get_web_domains
 	domains = set()
+	domains.add(env['PRIMARY_HOSTNAME'])
 	domains |= set(get_mail_domains(env))
 	domains |= set(get_web_domains(env, include_www_redirects=False))
-	domains.add(env['PRIMARY_HOSTNAME'])
+	
 	return domains
 
 def get_dns_zones(env):
