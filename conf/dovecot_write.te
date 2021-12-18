@@ -1,0 +1,18 @@
+
+module dovecot_write 1.0;
+
+require {
+        type default_t;
+        type dovecot_etc_t;
+        type postfix_smtpd_t;
+        type dovecot_t;
+        class lnk_file read;
+        class file read;
+}
+
+#============= dovecot_t ==============
+allow dovecot_t default_t:file read;
+allow dovecot_t default_t:lnk_file read;
+
+#============= postfix_smtpd_t ==============
+allow postfix_smtpd_t dovecot_etc_t:lnk_file read;
