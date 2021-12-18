@@ -16,7 +16,7 @@ require {
 
 
 allow init_t admin_home_t:file { create ioctl open read rename unlink execute execute_no_trans write lock };
-allow init_t default_t:file { read write open ioctl lock };
+allow init_t default_t:file { read write open ioctl lock create };
 allow init_t default_t:lnk_file { read write open ioctl lock };
 allow init_t nsd_conf_t:dir add_name;
 allow init_t httpd_config_t:dir add_name;
