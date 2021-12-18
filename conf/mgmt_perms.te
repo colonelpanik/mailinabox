@@ -6,13 +6,13 @@ require {
         type admin_home_t;
         type default_t;
         type init_t;
-        class file { create ioctl open read rename unlink write execute };
+        class file { create ioctl open read rename unlink write execute execute_no_trans };
         class dir add_name;
 }
 
 #============= init_t ==============
 
 
-allow init_t admin_home_t:file { create ioctl open read rename unlink execute };
+allow init_t admin_home_t:file { create ioctl open read rename unlink execute execute_no_trans };
 allow init_t default_t:file { read write };
 allow init_t nsd_conf_t:dir add_name;
