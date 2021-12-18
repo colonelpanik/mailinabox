@@ -16,10 +16,9 @@ source /etc/mailinabox.conf # load global vars
 # Prereqs.
 
 echo "Installing Z-Push (Exchange/ActiveSync server)..."
-dnf install --assumeyes --quiet \
-	php-soap php-imap php-xsl
+dnf install --assumeyes --quiet php-soap php-imap php-xsl
 
-phpenmod -v php imap
+#phpenmod -v php imap
 
 # Copy Z-Push into place.
 VERSION=2.6.2
