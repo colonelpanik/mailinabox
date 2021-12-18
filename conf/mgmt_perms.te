@@ -6,7 +6,7 @@ require {
         type admin_home_t;
         type default_t;
         type init_t;
-        class file { create ioctl open read rename unlink write execute execute_no_trans };
+        class file { create ioctl open read rename unlink write execute execute_no_trans lock };
         class dir add_name;
 }
 
