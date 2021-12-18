@@ -166,7 +166,6 @@ tools/editconf.py /etc/mail/spamassassin/local.cf -s \
 	bayes_path=$STORAGE_ROOT/mail/spamassassin/bayes \
 	bayes_file_mode=0666
 
-useradd -r spampd -s /sbin/nologin
 mkdir -p $STORAGE_ROOT/mail/spamassassin
 chown -R spampd:spampd $STORAGE_ROOT/mail/spamassassin
 
