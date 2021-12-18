@@ -214,4 +214,8 @@ hide_output firewall-cmd --add-service=pop3s
 hide_output firewall-cmd --add-port=4190/tcp
 
 # Restart services.
+semanage fcontext -a -t dovecot_etc_t "$STORAGE_ROOT/ssl/(.*)?"
+semanage port -m -t pop_port_t -p tcp 10026
+restorecon -v $STORAGE_ROOT/ssl
+
 restart_service dovecot
