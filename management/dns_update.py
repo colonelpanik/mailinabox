@@ -25,10 +25,9 @@ def get_dns_domains(env):
 	from mailconfig import get_mail_domains
 	from web_update import get_web_domains
 	domains = set()
-	domains.add(env['PRIMARY_HOSTNAME'])
 	domains |= set(get_mail_domains(env))
 	domains |= set(get_web_domains(env, include_www_redirects=False))
-	
+#	domains.add(env['PRIMARY_HOSTNAME'])
 	return domains
 
 def get_dns_zones(env):
@@ -720,7 +719,8 @@ def sign_zone(domain, zonefile, env):
 		"-u",
 
 		# zonefile to sign
-		"/etc/nsd/zones/" + zonefile,
+		#"/etc/nsd/zones/" + zonefile,
+		domain,
 	]
 		# keys to sign with (order doesn't matter -- it'll figure it out)
 		+ all_keys
