@@ -13,7 +13,7 @@ dnf --quiet --assumeyes install --enablerepo=powertools,epel munin munin-node pe
 # edit config
 cat > /etc/munin/munin.conf <<EOF;
 dbdir /var/lib/munin
-htmldir /var/cache/munin/www
+htmldir /var/www/html/munin/www
 logdir /var/log/munin
 rundir /var/run/munin
 tmpldir /etc/munin/templates
