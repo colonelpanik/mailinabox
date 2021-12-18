@@ -3,10 +3,10 @@ module munin_perms 1.0;
 require {
         type system_munin_plugin_t;
         type mail_munin_plugin_t;
-        class netlink_generic_socket { create bind setopt ioctl read write };
-        class unix_dgram_socket { create bind setopt ioctl read write };
+        class netlink_generic_socket { create bind setopt ioctl read write getattr };
+        class unix_dgram_socket { create bind setopt ioctl read write getattr };
 }
 
 #============= system_munin_plugin_t ==============
-allow system_munin_plugin_t self:netlink_generic_socket { create bind setopt ioctl read write gettattr };
-allow mail_munin_plugin_t self:unix_dgram_socket { create bind setopt ioctl read write gettattr };
+allow system_munin_plugin_t self:netlink_generic_socket { create bind setopt ioctl read write getattr };
+allow mail_munin_plugin_t self:unix_dgram_socket { create bind setopt ioctl read write getattr };
