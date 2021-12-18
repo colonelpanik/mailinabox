@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Check that we are running on a RHEL 8 compatible distro.
-if [ "$(grep -q 'Linux release 8' /etc/redhat-release)" -eq "0" ] ; then
+if ! [ grep '8\.' /etc/redhat-release ]
         "Just centos 8 for now"
 	exit 1
 fi
