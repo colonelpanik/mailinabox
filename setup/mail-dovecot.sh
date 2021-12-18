@@ -217,7 +217,7 @@ hide_output firewall-cmd --add-port=4190/tcp
 semanage fcontext -a -t dovecot_etc_t "$STORAGE_ROOT/ssl/(.*)?"
 semanage port -m -t pop_port_t -p tcp 10026
 restorecon -v $STORAGE_ROOT/ssl
-checkmodule -M -m -o /tmp/dovecot_write.mod `pwd`/conf/dovecot_write.pp
+checkmodule -M -m -o /tmp/dovecot_write.mod `pwd`/conf/dovecot_write.te
 semodule_package -o /tmp/dovecot_write.pp /tmp/dovecot_write.mod
 (cd /tmp; semodule -i dovecot_write.pp)
 
