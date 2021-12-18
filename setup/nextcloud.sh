@@ -13,7 +13,7 @@ echo "Installing Nextcloud (contacts/calendar)..."
 hide_output dnf --quiet --assumeyes --enablerepo=powertools install doxygen
 hide_output dnf --quiet --assumeyes install \
      yum-utils unzip curl wget bash-completion policycoreutils-python-utils mlocate bzip2 \
-     php php-gd php-mbstring php-intl php72-php-pecl-apcu php-pecl-apcu php-mysqlnd php-opcache php-json php-zip php-process
+     php php-gd php-mbstring php-intl php-pecl-apcu php-mysqlnd php-opcache php-json php-zip php-process
 
 usermod -a -G user-data nginx
 
