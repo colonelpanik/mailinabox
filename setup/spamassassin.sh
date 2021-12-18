@@ -69,7 +69,7 @@ ExecStart=/usr/sbin/spampd --nodetach -u spampd -g spampd --homedir /var/spool/s
 WantedBy=multi-user.target
 EOF
 # Add user if not existing
-if ! id spampd &>/dev/null ; then
+if id spampd &>/dev/null ; then
     useradd -r -s /bin/login spampd
 fi
 
