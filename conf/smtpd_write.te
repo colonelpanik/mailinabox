@@ -16,6 +16,7 @@ require {
 
 #============= postfix_cleanup_t ==============
 allow postfix_cleanup_t postfix_smtpd_tmp_t:file write;
+allow postfix_cleanup_t default_t:file getattr;
 
 #============= postfix_master_t ==============
 allow postfix_master_t postfix_smtpd_tmp_t:file write;
@@ -26,3 +27,4 @@ allow postfix_smtpd_t default_t:lnk_file read;
 allow postfix_smtpd_t dovecot_etc_t:lnk_file read;
 allow postfix_smtpd_t postfix_cleanup_tmp_t:file write;
 allow postfix_smtpd_t postfix_data_t:file getattr;
+
