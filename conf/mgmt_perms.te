@@ -1,5 +1,5 @@
 
-module python 1.0;
+module mgmt_perms 1.0;
 
 require {
         type admin_home_t;
