@@ -349,7 +349,6 @@ cat > /etc/cron.d/mailinabox-nextcloud << EOF;
 # Mail-in-a-Box
 */5 * * * *	root	sudo -u nginx php -f /usr/local/lib/owncloud/cron.php
 EOF
-chmod +x /etc/cron.d/mailinabox-nextcloud
 
 # Remove previous hourly cronjob
 rm -f /etc/cron.hourly/mailinabox-owncloud
