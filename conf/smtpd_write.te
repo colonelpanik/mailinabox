@@ -15,17 +15,17 @@ require {
 }
 
 #============= postfix_cleanup_t ==============
-allow postfix_cleanup_t postfix_smtpd_tmp_t:file write;
+allow postfix_cleanup_t postfix_smtpd_tmp_t:file { read write write getattr };
 allow postfix_cleanup_t default_t:file { getattr write read open };
 
 #============= postfix_master_t ==============
-allow postfix_master_t postfix_smtpd_tmp_t:file write;
+allow postfix_master_t postfix_smtpd_tmp_t:file { read write write getattr };
 allow postfix_master_t default_t:file { getattr read write open };
 
 #============= postfix_smtpd_t ==============
-allow postfix_smtpd_t default_t:file getattr;
+allow postfix_smtpd_t default_t:file { read write open getattr };
 allow postfix_smtpd_t default_t:lnk_file read;
 allow postfix_smtpd_t dovecot_etc_t:lnk_file read;
-allow postfix_smtpd_t postfix_cleanup_tmp_t:file write;
-allow postfix_smtpd_t postfix_data_t:file getattr;
+allow postfix_smtpd_t postfix_cleanup_tmp_t:file { read write write getattr };
+allow postfix_smtpd_t postfix_data_t:file { read write write getattr };
 
