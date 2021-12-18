@@ -11,10 +11,10 @@ source /etc/mailinabox.conf # load global vars
 # Turn off nginx's default website.
 
 echo "Installing Nginx (web server)..."
-dnf --quiet --assumeyes install dnf-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm
-dnf --quiet --assumeyes module reset php
-dnf --quiet --assumeyes module enable php:remi-7.2
-dnf --quiet --assumeyes install bind nginx php-cli php-fpm idn2 php php-fpm php-gd
+hide_output dnf --quiet --assumeyes install dnf-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm
+hide_output dnf --quiet --assumeyes module reset php
+hide_output dnf --quiet --assumeyes module enable php:remi-7.2
+hide_output dnf --quiet --assumeyes install bind nginx php-cli php-fpm idn2 php php-fpm php-gd
 
 rm -f /etc/nginx/sites-enabled/default
 
