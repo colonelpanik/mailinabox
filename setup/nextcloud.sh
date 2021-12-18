@@ -13,7 +13,7 @@ echo "Installing Nextcloud (contacts/calendar)..."
 hide_output dnf --quiet --assumeyes --enablerepo=powertools install doxygen
 hide_output dnf --quiet --assumeyes install \
      yum-utils unzip curl wget bash-completion policycoreutils-python-utils mlocate bzip2 \
-     php php-gd php-mbstring php-intl php-pecl-apcu php-mysqlnd php-opcache php-json php-zip php-process
+     php php-gd php-mbstring php-intl php72-php-pecl-apcu php-pecl-apcu php-mysqlnd php-opcache php-json php-zip php-process
 
 usermod -a -G user-data nginx
 
@@ -338,8 +338,8 @@ tools/editconf.py /etc/php.d/10-opcache.ini -c ';' \
 	opcache.revalidate_freq=1
 
 # If apc is explicitly disabled we need to enable it
-if grep -q apc.enabled=0 /etc/php.d/apcu.ini; then
-	tools/editconf.py /etc/php.d/apcu.ini -c ';' \
+if grep -q apc.enabled=0 /etc/php.d/40-apcu.ini; then
+	tools/editconf.py /etc/php.d/40-apcu.ini -c ';' \
 		apc.enabled=1
 fi
 
