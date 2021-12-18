@@ -63,7 +63,7 @@ Wants=sa-update.timer
 User=spampd
 Group=spampd
 EnvironmentFile=/etc/sysconfig/spampd
-ExecStart=/usr/sbin/spampd --nodetach -u spampd -g spampd --homedir /var/spool/spampd --pid $STORAGE_ROOT/run/spampd.run $SPAMPD_OPTIONS
+ExecStart=/usr/sbin/spampd --nodetach -u spampd -g spampd --homedir /var/spool/spampd --pid "/user-data/run/spampd.run" $SPAMPD_OPTIONS
 
 [Install]
 WantedBy=multi-user.target
