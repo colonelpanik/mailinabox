@@ -47,7 +47,7 @@ if [ $needs_update == 1 ]; then
 fi
 
 # Configure default config.
-sed -i "s^define('TIMEZONE', .*^define('TIMEZONE', '$(cat /etc/timezone)');^" /usr/local/lib/z-push/config.php
+sed -i "s^define('TIMEZONE', .*^define('TIMEZONE', '$(timedatectl show --value | head -n 1)');^" /usr/local/lib/z-push/config.php
 sed -i "s/define('BACKEND_PROVIDER', .*/define('BACKEND_PROVIDER', 'BackendCombined');/" /usr/local/lib/z-push/config.php
 sed -i "s/define('USE_FULLEMAIL_FOR_LOGIN', .*/define('USE_FULLEMAIL_FOR_LOGIN', true);/" /usr/local/lib/z-push/config.php
 sed -i "s/define('LOG_MEMORY_PROFILER', .*/define('LOG_MEMORY_PROFILER', false);/" /usr/local/lib/z-push/config.php
@@ -75,7 +75,7 @@ cp conf/zpush/backend_caldav.php /usr/local/lib/z-push/backend/caldav/config.php
 rm -f /usr/local/lib/z-push/autodiscover/config.php
 cp conf/zpush/autodiscover_config.php /usr/local/lib/z-push/autodiscover/config.php
 sed -i "s/PRIMARY_HOSTNAME/$PRIMARY_HOSTNAME/" /usr/local/lib/z-push/autodiscover/config.php
-sed -i "s^define('TIMEZONE', .*^define('TIMEZONE', '$(cat /etc/timezone)');^" /usr/local/lib/z-push/autodiscover/config.php
+sed -i "s^define('TIMEZONE', .*^define('TIMEZONE', '$(timedatectl show --value | head -n 1)');^" /usr/local/lib/z-push/autodiscover/config.php
 
 # Some directories it will use.
 
@@ -83,8 +83,8 @@ mkdir -p /var/log/z-push
 mkdir -p /var/lib/z-push
 chmod 750 /var/log/z-push
 chmod 750 /var/lib/z-push
-chown www-data:www-data /var/log/z-push
-chown www-data:www-data /var/lib/z-push
+chown nginx:nginx /var/log/z-push
+chown nginx:nginx /var/lib/z-push
 
 # Add log rotation
 
@@ -101,7 +101,7 @@ EOF
 
 # Restart service.
 
-restart_service php7.2-fpm
+restart_service php-fpm
 
 # Fix states after upgrade
 
