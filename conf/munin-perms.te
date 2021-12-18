@@ -1,0 +1,11 @@
+module my-eth 1.0;
+
+require {
+        type system_munin_plugin_t;
+        class netlink_generic_socket create;
+        class unix_dgram_socket create;
+}
+
+#============= system_munin_plugin_t ==============
+allow system_munin_plugin_t self:netlink_generic_socket create;
+allow mail_munin_plugin_t self:unix_dgram_socket create;

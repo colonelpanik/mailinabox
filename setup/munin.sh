@@ -70,6 +70,11 @@ hide_output systemctl daemon-reload
 hide_output systemctl unmask munin.service
 hide_output systemctl enable munin.service
 
+
+checkmodule -M -m -o /tmp/munin_perms.mod `pwd`/conf/munin_perms.te
+semodule_package -o /tmp/munin_perms.pp -m /tmp/munin_perms.mod
+(cd /tmp; semodule -i munin_perms.pp)
+
 # Restart services.
 restart_service munin
 restart_service munin-node

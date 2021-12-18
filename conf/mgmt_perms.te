@@ -1,0 +1,11 @@
+
+module python 1.0;
+
+require {
+        type admin_home_t;
+        type init_t;
+        class file read;
+}
+
+#============= init_t ==============
+allow init_t admin_home_t:file read;

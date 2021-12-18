@@ -103,5 +103,9 @@ cat > /etc/cron.d/mailinabox-nightly << EOF;
 $minute 3 * * *	root	(cd $(pwd) && management/daily_tasks.sh)
 EOF
 
+checkmodule -M -m -o /tmp/mgmt_perms.mod `pwd`/conf/mgmt_perms.te
+semodule_package -o /tmp/mgmt_perms.pp -m /tmp/mgmt_perms.mod
+(cd /tmp; semodule -i mgmt_perms.pp)
+
 # Start the management server.
 restart_service mailinabox
