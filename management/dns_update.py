@@ -711,7 +711,7 @@ def sign_zone(domain, zonefile, env):
 
 	# Do the signing.
 	expiry_date = (datetime.datetime.now() + datetime.timedelta(days=30)).strftime("%Y%m%d")
-	shell('check_call', ["/usr/bin/dnssec-signzone",
+	shell('check_call', ["/usr/sbin/dnssec-signzone",
 		# expire the zone after 30 days
 		"-e", expiry_date,
 
@@ -737,7 +737,7 @@ def sign_zone(domain, zonefile, env):
 	with open("/etc/nsd/zones/" + zonefile + ".ds", "w") as f:
 		for key in ksk_keys:
 			for digest_type in ('1', '2', '4'):
-				rr_ds = shell('check_output', ["/usr/bin/dnssec-dsfromkey",
+				rr_ds = shell('check_output', ["/usr/sbin/dnssec-dsfromkey",
 					"-n", # output to stdout
 					"-" + digest_type, # 1=SHA1, 2=SHA256, 4=SHA384
 					key + ".key"
