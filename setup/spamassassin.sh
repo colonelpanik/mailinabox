@@ -22,6 +22,8 @@ source setup/functions.sh # load our functions
 echo "Installing SpamAssassin..."
 dnf --assumeyes --quiet install spamass-milter-postfix spamass-milter spamassassin-iXhash2  pyzor perl-Razor-Agent.x86_64
 
+wget https://raw.githubusercontent.com/mpaperno/spampd/master/spampd.pl -O /usr/sbin/spampd
+
 # Allow spamassassin to download new rules.
 tools/editconf.py /etc/sysconfig/spamassassin \
 	CRON=1
