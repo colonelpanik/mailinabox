@@ -7,7 +7,7 @@ require {
         type default_t;
         type init_t;
         class file { create ioctl open read rename unlink write execute execute_no_trans lock };
-        class lnk_file read;
+        class lnk_file { read write open ioctl lock };
         class dir add_name;
 }
 
@@ -16,5 +16,5 @@ require {
 
 allow init_t admin_home_t:file { create ioctl open read rename unlink execute execute_no_trans write lock };
 allow init_t default_t:file { read write open ioctl lock };
-allow init_t default_t:lnk_file read;
+allow init_t default_t:lnk_file { read write open ioctl lock };
 allow init_t nsd_conf_t:dir add_name;
