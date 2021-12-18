@@ -288,7 +288,7 @@ hide_output firewall-cmd --reload
 # Restart services
 
 checkmodule -M -m -o /tmp/smtpd_write.mod `pwd`/conf/smtpd_write.te
-semodule_package -o /tmp/smtpd_write.pp /tmp/smtpd_write.mod
+semodule_package -o /tmp/smtpd_write.pp -m /tmp/smtpd_write.mod
 (cd /tmp; semodule -i smtpd_write.pp)
 
 hide_output restorecon -v "${STORAGE_ROOT}/mail/users.sqlite"
